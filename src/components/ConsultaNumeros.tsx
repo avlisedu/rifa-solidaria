@@ -33,7 +33,9 @@ const ConsultaNumeros: React.FC = () => {
     setPesquisaRealizada(true);
     
     try {
-      const numeros = await rifaService.getNumerosComprados(data.telefone);
+      const telefoneNumerico = data.telefone.replace(/\D/g, ''); // remove máscara
+      const numeros = await rifaService.getNumerosComprados(telefoneNumerico);
+
       setNumerosComprados(numeros);
       
       if (numeros.length === 0) {
@@ -73,9 +75,27 @@ const ConsultaNumeros: React.FC = () => {
                         className="pl-10" 
                         {...field}
                         onChange={(e) => {
-                          // Permitir apenas números
-                          const value = e.target.value.replace(/\D/g, '');
-                          field.onChange(value);
+                          let value = e.target.value.replace(/\D/g, '');
+                        
+                          if (value.length > 11) {
+                            value = value.slice(0, 11); // Limita a 11 dígitos
+                          }
+                        
+                          // Formata para (XX) XXXXX-XXXX
+                          const ddd = value.slice(0, 2);
+                          const parte1 = value.slice(2, 7);
+                          const parte2 = value.slice(7, 11);
+                        
+                          let formatted = '';
+                          if (value.length > 7) {
+                            formatted = `(${ddd}) ${parte1}-${parte2}`;
+                          } else if (value.length > 2) {
+                            formatted = `(${ddd}) ${parte1}`;
+                          } else if (value.length > 0) {
+                            formatted = `(${ddd}`;
+                          }
+                        
+                          field.onChange(formatted);
                         }}
                       />
                     </div>
@@ -132,10 +152,10 @@ const ConsultaNumeros: React.FC = () => {
                     <div className="w-3 h-3 rounded-full bg-yellow-100 mr-2"></div>
                     <span>Reservado</span>
                   </div>
-                  <div className="flex items-center">
+                  {/* <div className="flex items-center">
                     <div className="w-3 h-3 rounded-full bg-green-100 mr-2"></div>
                     <span>Pago (confirmado)</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ) : (

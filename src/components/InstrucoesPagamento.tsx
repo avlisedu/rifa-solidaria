@@ -43,10 +43,10 @@ const InstrucoesPagamento: React.FC<InstrucoesPagamentoProps> = ({
                 <div>
                   <span className="font-medium">Chave PIX (CPF):</span> 
                   <div className="bg-white border border-gray-200 rounded px-3 py-1.5 mt-1 flex justify-between items-center">
-                    <code className="text-sm">000.000.000-00</code>
+                    <code className="text-sm">eduardo.es@ufpe.br</code>
                     <button 
                       onClick={() => {
-                        navigator.clipboard.writeText('00000000000');
+                        navigator.clipboard.writeText('eduardo.es@ufpe.br');
                         alert('Chave PIX copiada!');
                       }}
                       className="text-xs text-rifa-primary hover:text-rifa-accent font-medium"
@@ -59,14 +59,14 @@ const InstrucoesPagamento: React.FC<InstrucoesPagamentoProps> = ({
                 <div>
                   <span className="font-medium">Nome:</span> 
                   <div className="mt-1">
-                    <span className="text-sm">Nome do Beneficiário</span>
+                    <span className="text-sm">Eduardo da Silva</span>
                   </div>
                 </div>
                 
                 <div>
                   <span className="font-medium">Banco:</span> 
                   <div className="mt-1">
-                    <span className="text-sm">Nome do Banco</span>
+                    <span className="text-sm">Banco do Brasil</span>
                   </div>
                 </div>
               </div>

@@ -2,10 +2,11 @@
 import { createClient } from '@supabase/supabase-js';
 import { RifaNumber } from '../types/rifa';
 
-const SUPABASE_URL = "https://xkwusqpqmtjfehabofiv.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhrd3VzcXBxbXRqZmVoYWJvZml2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM3NDYwNTUsImV4cCI6MjA1OTMyMjA1NX0.dMgmFugtFepEzo4ouOr6iaNH2OkhJZyPTS8Vkl8Rkrk";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 
 export const rifaService = {
   async getNumeros(): Promise<RifaNumber[]> {
@@ -101,9 +102,9 @@ export const rifaService = {
         const { error } = await supabase
           .from('rifa')
           .insert({
-            numero: [numero],
+            numero: numero,
             nome: dadosComprador.nome,
-            telefone: dadosComprador.telefone,
+            telefone: dadosComprador.telefone.replace(/\D/g, ''),
             instagram: dadosComprador.instagram,
             data_reserva: new Date().toISOString()
           });

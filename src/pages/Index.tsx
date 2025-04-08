@@ -30,9 +30,11 @@ const Index = () => {
           <h2 className="text-2xl font-bold text-rifa-primary mb-2">
             Rifa Solidária - Apoio ao Doutorado
           </h2>
-          <p className="mb-4">
-            Olá! Estou passando por um momento desafiador no meu doutorado e preciso da sua ajuda. 
-            Atualmente estou sem bolsa, e para continuar meus estudos, estou realizando esta rifa solidária.
+          <p className="mb-4">        
+
+          Olá! Recentemente entrei no doutorado — 7º lugar de 25. Tudo certo até aqui, né? Só faltou um pequeno detalhe: a bolsa. Coincidência ou não, parece que ela resolveu pular justamente o meu nome.
+
+          Como ainda não há previsão de receber esse auxílio, estou realizando esta rifa solidária pra tentar seguir com os estudos sem depender apenas da fé no futuro. Se puder ajudar, já fico imensamente grato. E ainda tem chance de ganhar um prêmio! 🎁📚
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="bg-white rounded-lg p-4 shadow-sm">
@@ -41,16 +43,17 @@ const Index = () => {
                 <li>Cada número custa R$ 10,00</li>
                 <li>Escolha quantos números quiser</li>
                 <li>Faça o pagamento via PIX</li>
-                <li>Envie o comprovante para confirmar</li>
+                <li>Envie o comprovante para confirmar (Obrigatório)</li>
               </ul>
             </div>
             <div className="bg-white rounded-lg p-4 shadow-sm">
               <h3 className="font-bold text-lg mb-2">Prêmio</h3>
               <ul className="list-disc pl-5 space-y-1">
-                <li>1º lugar: Prêmio principal</li>
+                <li>1º lugar: R$ 200,00</li>
+                <li>2º lugar: Barril Heineken 5 Litros</li>
                 <li>Sorteio pela Loteria Federal</li>
-                <li>Data do sorteio: A confirmar</li>
-                <li>Resultado divulgado nas redes sociais</li>
+                <li>Data do sorteio: 01/05/2025</li>
+                <li>Resultado divulgado nas redes sociais (@eo.silva)</li>
               </ul>
             </div>
           </div>

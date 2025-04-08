@@ -10,12 +10,13 @@ interface MainLayoutProps {
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-rifa-primary text-white shadow-md">
-        <div className="container mx-auto py-6">
-          <h1 className="text-3xl font-bold text-center">Rifa Solidária</h1>
-          <p className="text-center mt-2 text-white/90">Ajude a financiar um estudante de Doutorado 🎓</p>
-        </div>
-      </header>
+<header className="bg-rifa-primary text-white shadow-md">
+  <div className="container mx-auto py-4"> {}
+    <h3 className="text-5xl font-bold text-center">Rifa Solidária</h3> {}
+    <p className="text-center mt-4 text-white/90 text-lg">Ajude a financiar um estudante de Doutorado 🎓</p> {}
+  </div>
+</header>
+
       
       <main className="container mx-auto py-8 px-4">
         {children}

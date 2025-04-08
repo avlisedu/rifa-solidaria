@@ -18,7 +18,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
   const [isLoading, setIsLoading] = useState(true);
   const numerosPorPagina = 100;
   
-  const totalPaginas = Math.ceil(1000 / numerosPorPagina);
+  const totalPaginas = Math.ceil(999 / numerosPorPagina);
   
   useEffect(() => {
     const fetchNumeros = async () => {
@@ -28,8 +28,8 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
         
         // Se não temos registros do banco, vamos criar um array com os 1000 números
         if (numerosData.length === 0) {
-          const inicialNumeros: RifaNumber[] = Array.from({ length: 1000 }, (_, i) => ({
-            numero: i,
+          const inicialNumeros: RifaNumber[] = Array.from({ length: 999 }, (_, i) => ({
+            numero: i + 1,
             status: 'disponivel'
           }));
           setTodosNumeros(inicialNumeros);
@@ -124,9 +124,10 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
               </div>
             </div>
             <div className="number-grid">
-              {Array.from({ length: numerosPorPagina }, (_, i) => {
-                const numeroAtual = (paginaAtual - 1) * numerosPorPagina + i;
-                if (numeroAtual >= 1000) return null;
+            {Array.from({ length: numerosPorPagina }, (_, i) => {
+  const numeroAtual = (paginaAtual - 1) * numerosPorPagina + i + 1;
+  if (numeroAtual > 999) return null;
+
                 
                 const rifaNumber = todosNumeros.find(n => n.numero === numeroAtual) || {
                   numero: numeroAtual,
