@@ -57,7 +57,7 @@ const InstrucoesPagamento: React.FC<InstrucoesPagamentoProps> = ({
               
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2">
                 <div>
-                  <span className="font-medium">Chave PIX (CPF):</span> 
+                  <span className="font-medium">Chave PIX (E-mail):</span> 
                   <div className="bg-white border border-gray-200 rounded px-3 py-1.5 mt-1 flex justify-between items-center">
                     <code className="text-sm">eduardo.es@ufpe.br</code>
                     <button 
