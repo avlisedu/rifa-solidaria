@@ -13,7 +13,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 <header className="bg-rifa-primary text-white shadow-md">
   <div className="container mx-auto py-4"> {}
     <h3 className="text-5xl font-bold text-center">Rifa Solidária</h3> {}
-    <p className="text-center mt-4 text-white/90 text-lg">Ajude a financiar um estudante de Doutorado 🎓</p> {}
+    <p className="text-center mt-4 text-white/90 text-lg">Ajude um estudante de Doutorado 🎓</p> {}
   </div>
 </header>
 
