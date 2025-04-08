@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 import { RifaNumber } from '../types/rifa';
 
@@ -9,7 +8,6 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export const rifaService = {
   async getNumeros(): Promise<RifaNumber[]> {
-    // First, let's query the database to see what data we get
     const { data, error } = await supabase
       .from('rifa')
       .select('*')
@@ -20,9 +18,7 @@ export const rifaService = {
       return [];
     }
     
-    // Check if we need to generate numbers from 0-999
     if (!data || data.length === 0) {
-      // Create an array with 1000 numbers (0-999)
       const initialNumbers: RifaNumber[] = Array.from({ length: 1000 }, (_, i) => ({
         numero: i,
         status: 'disponivel'
@@ -30,10 +26,7 @@ export const rifaService = {
       return initialNumbers;
     }
     
-    // Map the results to RifaNumber type
     return data.map(item => {
-      // For existing data, extract the numero from the database
-      // Check if numero is stored as an array or single value
       let numeroValue: number;
       
       if (Array.isArray(item.numero)) {
@@ -73,7 +66,6 @@ export const rifaService = {
       return [];
     }
     
-    // Map the results to RifaNumber type
     return data.map(item => {
       let numeroValue: number;
       
@@ -104,12 +96,11 @@ export const rifaService = {
     instagram: string;
   }): Promise<boolean> {
     try {
-      // For each number, create an individual record
       for (const numero of numeros) {
         const { error } = await supabase
           .from('rifa')
           .insert({
-            numero: [numero], // Store as array based on your DB schema
+            numero: [numero],
             nome: dadosComprador.nome,
             telefone: dadosComprador.telefone,
             instagram: dadosComprador.instagram,
@@ -132,12 +123,11 @@ export const rifaService = {
   async uploadComprovante(file: File, telefone: string, numeros: number[]): Promise<string | null> {
     const fileExt = file.name.split('.').pop();
     const fileName = `${telefone}-${Date.now()}.${fileExt}`;
-    const filePath = `comprovantes/${fileName}`;
+    const filePath = `${fileName}`;
     
     try {
-      // 1. Upload the file to storage
       const { error: uploadError } = await supabase.storage
-        .from('rifa-comprovantes')
+        .from('comprovantes')
         .upload(filePath, file);
       
       if (uploadError) {
@@ -145,18 +135,16 @@ export const rifaService = {
         return null;
       }
 
-      // 2. Get the public URL
       const { data } = supabase.storage
-        .from('rifa-comprovantes')
+        .from('comprovantes')
         .getPublicUrl(filePath);
       
-      // 3. Update all reserved numbers for this user with the payment proof URL
       for (const numero of numeros) {
         const { error: updateError } = await supabase
           .from('rifa')
           .update({ comprovante: data.publicUrl })
           .eq('telefone', telefone)
-          .eq('numero', [numero]); // Match the array format
+          .eq('numero', [numero]);
         
         if (updateError) {
           console.error(`Erro ao atualizar número ${numero} com comprovante:`, updateError);
