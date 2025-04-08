@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface InstrucoesPagamentoProps {
   numerosSelecionados: number[];
@@ -13,7 +13,23 @@ const InstrucoesPagamento: React.FC<InstrucoesPagamentoProps> = ({
   valorPorNumero = 10
 }) => {
   const valorTotal = numerosSelecionados.length * valorPorNumero;
+
+  const copiarChave = () => {
+    const chave = 'eduardo.es@ufpe.br';
+    const tempInput = document.createElement('textarea');
+    tempInput.value = chave;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    try {
+      document.execCommand('copy');
+      toast.success('Chave PIX copiada com sucesso!');
+    } catch (err) {
+      toast.error('Erro ao copiar a chave PIX');
+    }
+    document.body.removeChild(tempInput);
+  };
   
+
   return (
     <Card>
       <CardHeader className="bg-rifa-primary/10">
@@ -45,10 +61,7 @@ const InstrucoesPagamento: React.FC<InstrucoesPagamentoProps> = ({
                   <div className="bg-white border border-gray-200 rounded px-3 py-1.5 mt-1 flex justify-between items-center">
                     <code className="text-sm">eduardo.es@ufpe.br</code>
                     <button 
-                      onClick={() => {
-                        navigator.clipboard.writeText('eduardo.es@ufpe.br');
-                        alert('Chave PIX copiada!');
-                      }}
+                      onClick={copiarChave}
                       className="text-xs text-rifa-primary hover:text-rifa-accent font-medium"
                     >
                       Copiar

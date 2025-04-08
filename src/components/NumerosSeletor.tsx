@@ -120,7 +120,8 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
           <>
             <div className="flex justify-center mb-2">
               <div className="px-3 py-1 bg-rifa-primary text-white rounded-full text-sm font-medium">
-                Página {paginaAtual} de {totalPaginas} - Números {(paginaAtual - 1) * numerosPorPagina} a {Math.min(paginaAtual * numerosPorPagina - 1, 999)}
+              Página {paginaAtual} de {totalPaginas} - Números {(paginaAtual - 1) * numerosPorPagina + 1} a {Math.min(paginaAtual * numerosPorPagina, 999)}
+
               </div>
             </div>
             <div className="number-grid">

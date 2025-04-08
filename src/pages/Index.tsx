@@ -27,12 +27,12 @@ const Index = () => {
     <MainLayout>
       <div className="max-w-5xl mx-auto">
         <div className="bg-rifa-primary/10 rounded-lg p-4 md:p-6 mb-8">
-          <h2 className="text-2xl font-bold text-rifa-primary mb-2">
+          {/* <h2 className="text-2xl font-bold text-rifa-primary mb-2">
             Rifa Solidária - Apoio ao Doutorado
-          </h2>
-          <p className="mb-4">        
+          </h2> */}
+          <p className="mb-4 text-justify">        
 
-          Olá! Recentemente entrei no doutorado — 7º lugar de 25. Tudo certo até aqui, né? Só faltou um pequeno detalhe: a bolsa. Coincidência ou não, parece que ela resolveu pular justamente o meu nome.
+          Olá! Recentemente entrei no doutorado (PPGEP/UFPE) — 7º lugar de 25 vagas. Tudo certo até aqui, né? Só faltou um pequeno detalhe: a bolsa 💰. Coincidência ou não, parece que ela resolveu pular justamente o meu nome.
 
           Como ainda não há previsão de receber esse auxílio, estou realizando esta rifa solidária pra tentar seguir com os estudos sem depender apenas da fé no futuro. Se puder ajudar, já fico imensamente grato. E ainda tem chance de ganhar um prêmio! 🎁📚
           </p>
