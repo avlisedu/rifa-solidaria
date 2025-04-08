@@ -18,7 +18,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
   const [isLoading, setIsLoading] = useState(true);
   const numerosPorPagina = 100;
   
-  const totalPaginas = Math.ceil(999 / numerosPorPagina);
+  const totalPaginas = Math.ceil(200 / numerosPorPagina);
   
   useEffect(() => {
     const fetchNumeros = async () => {
@@ -28,7 +28,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
         
         // Se não temos registros do banco, vamos criar um array com os 1000 números
         if (numerosData.length === 0) {
-          const inicialNumeros: RifaNumber[] = Array.from({ length: 999 }, (_, i) => ({
+          const inicialNumeros: RifaNumber[] = Array.from({ length: 200 }, (_, i) => ({
             numero: i + 1,
             status: 'disponivel'
           }));
@@ -120,14 +120,14 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
           <>
             <div className="flex justify-center mb-2">
               <div className="px-3 py-1 bg-rifa-primary text-white rounded-full text-sm font-medium">
-              Página {paginaAtual} de {totalPaginas} - Números {(paginaAtual - 1) * numerosPorPagina + 1} a {Math.min(paginaAtual * numerosPorPagina, 999)}
+              Página {paginaAtual} de {totalPaginas} - Números {(paginaAtual - 1) * numerosPorPagina + 1} a {Math.min(paginaAtual * numerosPorPagina, 200)}
 
               </div>
             </div>
             <div className="number-grid">
             {Array.from({ length: numerosPorPagina }, (_, i) => {
   const numeroAtual = (paginaAtual - 1) * numerosPorPagina + i + 1;
-  if (numeroAtual > 999) return null;
+  if (numeroAtual > 200) return null;
 
                 
                 const rifaNumber = todosNumeros.find(n => n.numero === numeroAtual) || {
