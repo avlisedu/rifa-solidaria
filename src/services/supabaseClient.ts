@@ -1,3 +1,4 @@
+
 import { createClient } from '@supabase/supabase-js';
 import { RifaNumber } from '../types/rifa';
 
@@ -121,28 +122,41 @@ export const rifaService = {
   },
   
   async uploadComprovante(file: File, telefone: string, numeros: number[]): Promise<string | null> {
+    // Create a unique filename with the current timestamp
     const fileExt = file.name.split('.').pop();
     const fileName = `${telefone}-${Date.now()}.${fileExt}`;
-    const filePath = `${fileName}`;
     
     try {
-      const { error: uploadError } = await supabase.storage
+      // Upload to the "comprovantes" bucket (which already exists)
+      const { error: uploadError, data } = await supabase.storage
         .from('comprovantes')
-        .upload(filePath, file);
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
       
       if (uploadError) {
         console.error('Erro ao fazer upload do comprovante:', uploadError);
         return null;
       }
-
-      const { data } = supabase.storage
-        .from('comprovantes')
-        .getPublicUrl(filePath);
       
+      // Get the public URL of the uploaded file
+      const { data: urlData } = supabase.storage
+        .from('comprovantes')
+        .getPublicUrl(fileName);
+      
+      if (!urlData || !urlData.publicUrl) {
+        console.error('Erro ao obter URL pública do comprovante');
+        return null;
+      }
+      
+      const publicUrl = urlData.publicUrl;
+      
+      // Update all reserved numbers with the comprovante URL
       for (const numero of numeros) {
         const { error: updateError } = await supabase
           .from('rifa')
-          .update({ comprovante: data.publicUrl })
+          .update({ comprovante: publicUrl })
           .eq('telefone', telefone)
           .eq('numero', [numero]);
         
@@ -151,7 +165,7 @@ export const rifaService = {
         }
       }
       
-      return data.publicUrl;
+      return publicUrl;
     } catch (error) {
       console.error('Erro ao processar upload de comprovante:', error);
       return null;
