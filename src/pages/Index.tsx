@@ -34,7 +34,7 @@ const Index = () => {
 
           Olá! Recentemente entrei no doutorado (PPGEP/UFPE) — 7º lugar de 25 vagas. Tudo certo até aqui, né? Só faltou um pequeno detalhe: a bolsa 💰. Coincidência ou não, parece que ela resolveu pular justamente o meu nome.
 
-          Como ainda não há previsão de receber esse auxílio, estou realizando esta rifa solidária pra tentar seguir com os estudos sem depender apenas da fé no futuro. Se puder ajudar, já fico imensamente grato. E ainda tem chance de ganhar um prêmio! 🎁📚
+          Como ainda não há previsão de receber esse auxílio, estou realizando esta rifa solidária pra conseguir continuar os estudos com um pouco mais de tranquilidade. Se puder ajudar, já fico imensamente grato. E ainda tem chance de ganhar um prêmio! 🎁📚
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="bg-white rounded-lg p-4 shadow-sm">
