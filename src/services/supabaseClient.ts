@@ -9,32 +9,93 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export const rifaService = {
   async getNumeros(): Promise<RifaNumber[]> {
+    // First, let's query the database to see what data we get
     const { data, error } = await supabase
       .from('rifa')
       .select('*')
-      .order('numero', { ascending: true });
+      .order('id', { ascending: true });
     
     if (error) {
       console.error('Erro ao buscar números:', error);
       return [];
     }
     
-    return data || [];
+    // Check if we need to generate numbers from 0-999
+    if (!data || data.length === 0) {
+      // Create an array with 1000 numbers (0-999)
+      const initialNumbers: RifaNumber[] = Array.from({ length: 1000 }, (_, i) => ({
+        numero: i,
+        status: 'disponivel'
+      }));
+      return initialNumbers;
+    }
+    
+    // Map the results to RifaNumber type
+    return data.map(item => {
+      // For existing data, extract the numero from the database
+      // Check if numero is stored as an array or single value
+      let numeroValue: number;
+      
+      if (Array.isArray(item.numero)) {
+        numeroValue = item.numero[0] || 0;
+      } else if (typeof item.numero === 'number') {
+        numeroValue = item.numero;
+      } else {
+        numeroValue = 0;
+      }
+      
+      return {
+        id: item.id,
+        numero: numeroValue,
+        status: item.comprovante ? 'pago' : (item.nome ? 'reservado' : 'disponivel'),
+        nome_comprador: item.nome,
+        telefone_comprador: item.telefone,
+        instagram_comprador: item.instagram,
+        data_compra: item.data_reserva,
+        comprovante_url: item.comprovante
+      };
+    });
   },
   
   async getNumerosComprados(telefone: string): Promise<RifaNumber[]> {
     const { data, error } = await supabase
       .from('rifa')
       .select('*')
-      .eq('telefone_comprador', telefone)
-      .order('numero', { ascending: true });
+      .eq('telefone', telefone)
+      .order('id', { ascending: true });
     
     if (error) {
       console.error('Erro ao buscar números comprados:', error);
       return [];
     }
     
-    return data || [];
+    if (!data || data.length === 0) {
+      return [];
+    }
+    
+    // Map the results to RifaNumber type
+    return data.map(item => {
+      let numeroValue: number;
+      
+      if (Array.isArray(item.numero)) {
+        numeroValue = item.numero[0] || 0;
+      } else if (typeof item.numero === 'number') {
+        numeroValue = item.numero;
+      } else {
+        numeroValue = 0;
+      }
+      
+      return {
+        id: item.id,
+        numero: numeroValue,
+        status: item.comprovante ? 'pago' : 'reservado',
+        nome_comprador: item.nome,
+        telefone_comprador: item.telefone,
+        instagram_comprador: item.instagram,
+        data_compra: item.data_reserva,
+        comprovante_url: item.comprovante
+      };
+    });
   },
   
   async reservarNumeros(numeros: number[], dadosComprador: {
@@ -42,25 +103,30 @@ export const rifaService = {
     telefone: string;
     instagram: string;
   }): Promise<boolean> {
-    const updates = numeros.map(numero => ({
-      numero,
-      status: 'reservado',
-      nome_comprador: dadosComprador.nome,
-      telefone_comprador: dadosComprador.telefone,
-      instagram_comprador: dadosComprador.instagram,
-      data_compra: new Date().toISOString()
-    }));
-
-    const { error } = await supabase
-      .from('rifa')
-      .upsert(updates, { onConflict: 'numero' });
-    
-    if (error) {
-      console.error('Erro ao reservar números:', error);
+    try {
+      // For each number, create an individual record
+      for (const numero of numeros) {
+        const { error } = await supabase
+          .from('rifa')
+          .insert({
+            numero: [numero], // Store as array based on your DB schema
+            nome: dadosComprador.nome,
+            telefone: dadosComprador.telefone,
+            instagram: dadosComprador.instagram,
+            data_reserva: new Date().toISOString()
+          });
+        
+        if (error) {
+          console.error(`Erro ao reservar número ${numero}:`, error);
+          return false;
+        }
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Erro ao processar reserva de números:', error);
       return false;
     }
-    
-    return true;
   },
   
   async uploadComprovante(file: File, telefone: string, numeros: number[]): Promise<string | null> {
@@ -68,34 +134,39 @@ export const rifaService = {
     const fileName = `${telefone}-${Date.now()}.${fileExt}`;
     const filePath = `comprovantes/${fileName}`;
     
-    const { error: uploadError } = await supabase.storage
-      .from('rifa-comprovantes')
-      .upload(filePath, file);
-    
-    if (uploadError) {
-      console.error('Erro ao fazer upload do comprovante:', uploadError);
+    try {
+      // 1. Upload the file to storage
+      const { error: uploadError } = await supabase.storage
+        .from('rifa-comprovantes')
+        .upload(filePath, file);
+      
+      if (uploadError) {
+        console.error('Erro ao fazer upload do comprovante:', uploadError);
+        return null;
+      }
+
+      // 2. Get the public URL
+      const { data } = supabase.storage
+        .from('rifa-comprovantes')
+        .getPublicUrl(filePath);
+      
+      // 3. Update all reserved numbers for this user with the payment proof URL
+      for (const numero of numeros) {
+        const { error: updateError } = await supabase
+          .from('rifa')
+          .update({ comprovante: data.publicUrl })
+          .eq('telefone', telefone)
+          .eq('numero', [numero]); // Match the array format
+        
+        if (updateError) {
+          console.error(`Erro ao atualizar número ${numero} com comprovante:`, updateError);
+        }
+      }
+      
+      return data.publicUrl;
+    } catch (error) {
+      console.error('Erro ao processar upload de comprovante:', error);
       return null;
     }
-
-    const { data } = supabase.storage
-      .from('rifa-comprovantes')
-      .getPublicUrl(filePath);
-    
-    // Atualizar registros com URL do comprovante
-    const { error: updateError } = await supabase
-      .from('rifa')
-      .update({ 
-        status: 'pago', 
-        comprovante_url: data.publicUrl 
-      })
-      .in('numero', numeros)
-      .eq('telefone_comprador', telefone);
-
-    if (updateError) {
-      console.error('Erro ao atualizar com comprovante:', updateError);
-      return null;
-    }
-    
-    return data.publicUrl;
   }
 };

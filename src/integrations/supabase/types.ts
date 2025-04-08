@@ -16,7 +16,7 @@ export type Database = {
           id: number
           instagram: string | null
           nome: string
-          numeros: number[]
+          numero: number[]
           telefone: string | null
         }
         Insert: {
@@ -25,7 +25,7 @@ export type Database = {
           id?: number
           instagram?: string | null
           nome: string
-          numeros?: number[]
+          numero?: number[]
           telefone?: string | null
         }
         Update: {
@@ -34,7 +34,7 @@ export type Database = {
           id?: number
           instagram?: string | null
           nome?: string
-          numeros?: number[]
+          numero?: number[]
           telefone?: string | null
         }
         Relationships: []
