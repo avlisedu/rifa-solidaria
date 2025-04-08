@@ -2,10 +2,28 @@
 import { createClient } from '@supabase/supabase-js';
 import { RifaNumber } from '../types/rifa';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+// Check if environment variables are available
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Validate environment variables
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error(
+    'Erro: Variáveis de ambiente Supabase não configuradas. ' +
+    'Por favor, configure VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY.'
+  );
+}
+
+// Create fallback values for development only
+// In production, this should be properly configured
+const fallbackUrl = 'https://example.supabase.co';
+const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+
+// Use fallbacks only if environment variables are missing
+export const supabase = createClient(
+  supabaseUrl || fallbackUrl,
+  supabaseAnonKey || fallbackKey
+);
 
 export const rifaService = {
   async getNumeros(): Promise<RifaNumber[]> {
