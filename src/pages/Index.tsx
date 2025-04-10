@@ -31,10 +31,7 @@ const Index = () => {
             Rifa Solidária - Apoio ao Doutorado
           </h2> */}
           <p className="mb-4 text-justify">        
-
-          Olá! Recentemente entrei no doutorado (PPGEP/UFPE) — 7º lugar de 25 vagas. Tudo certo até aqui, né? Só faltou um pequeno detalhe: a bolsa 💰. Coincidência ou não, parece que ela resolveu pular justamente o meu nome.
-
-          Como ainda não há previsão de receber esse auxílio, estou realizando esta rifa solidária pra conseguir continuar os estudos com um pouco mais de tranquilidade. Se puder ajudar, já fico imensamente grato. E ainda tem chance de ganhar um prêmio! 🎁📚
+          Olá! Recentemente, ingressei no doutorado na UFPE — 7º lugar entre 25 vagas. Tudo certo até aqui, né? Só faltou um pequeno detalhe: a bolsa. Coincidência ou não, parece que ela resolveu pular justamente o meu nome. Como ainda não há previsão para o recebimento desse bolsa, estou realizando esta rifa solidária para conseguir pagar minhas contas. Se puder ajudar, ficarei imensamente grato — e ainda estará concorrendo a prêmios!
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div className="bg-white rounded-lg p-4 shadow-sm">
