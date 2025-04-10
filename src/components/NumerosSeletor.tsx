@@ -13,7 +13,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
   const [todosNumeros, setTodosNumeros] = useState<RifaNumber[]>([]);
   const [numerosDisponiveis, setNumerosDisponiveis] = useState<RifaNumber[]>([]);
   const [numerosSelecionados, setNumerosSelecionados] = useState<number[]>([]);
-  const [paginaAtual, setPaginaAtual] = useState(1);
+  const [paginaAtual, setPaginaAtual] = useState(2);
   const [isLoading, setIsLoading] = useState(true);
   const numerosPorPagina = 100;
   
@@ -95,7 +95,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
         <div className="flex gap-2">
           <Button
             variant="outline"
-            onClick={() => setPaginaAtual(prev => Math.max(prev - 1, 1))}
+            onClick={() => setPaginaAtual(prev => Math.max(prev - 1, 2))}
             disabled={paginaAtual === 1}
           >
             Anterior
@@ -119,14 +119,14 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
           <>
             <div className="flex justify-center mb-2">
               <div className="px-3 py-1 bg-rifa-primary text-white rounded-full text-sm font-medium">
-              Página {paginaAtual} de {totalPaginas} - Números {(paginaAtual - 1) * numerosPorPagina + 1} a {Math.min(paginaAtual * numerosPorPagina, 400)}
+              Página {paginaAtual} de {totalPaginas} - Números {(paginaAtual - 1) * numerosPorPagina + 1} a {Math.min(paginaAtual * numerosPorPagina, 300)}
 
               </div>
             </div>
             <div className="number-grid">
             {Array.from({ length: numerosPorPagina }, (_, i) => {
   const numeroAtual = (paginaAtual - 1) * numerosPorPagina + i + 1;
-  if (numeroAtual > 400) return null;
+  if (numeroAtual > 300) return null;
 
                 
                 const rifaNumber = todosNumeros.find(n => n.numero === numeroAtual) || {
@@ -157,7 +157,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
         <Pagination>
           <Button 
             variant="outline" 
-            onClick={() => setPaginaAtual(1)}
+            onClick={() => setPaginaAtual(2)}
             disabled={paginaAtual === 1}
             className="mx-1"
           >
