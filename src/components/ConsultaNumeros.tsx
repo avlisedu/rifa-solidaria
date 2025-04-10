@@ -15,29 +15,32 @@ import { toast } from 'sonner';
 const consultaSchema = z.object({
   telefone: z.string().min(10, { message: 'Telefone inválido' })
 });
+// IMPORTS permanecem os mesmos...
 
 const ConsultaNumeros: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [numerosComprados, setNumerosComprados] = useState<RifaNumber[]>([]);
   const [pesquisaRealizada, setPesquisaRealizada] = useState(false);
-  
+  const [nomeComprador, setNomeComprador] = useState<string | null>(null); // <- novo
+
   const form = useForm<RifaConsultaData>({
     resolver: zodResolver(consultaSchema),
     defaultValues: {
       telefone: ''
     }
   });
-  
+
   const onSubmit = async (data: RifaConsultaData) => {
     setIsLoading(true);
     setPesquisaRealizada(true);
-    
+
     try {
-      const telefoneNumerico = data.telefone.replace(/\D/g, ''); // remove máscara
+      const telefoneNumerico = data.telefone.replace(/\D/g, '');
       const numeros = await rifaService.getNumerosComprados(telefoneNumerico);
 
       setNumerosComprados(numeros);
-      
+      setNomeComprador(numeros.length > 0 ? numeros[0].nome : null); // <- extrai nome
+
       if (numeros.length === 0) {
         toast.info('Nenhum número encontrado para este telefone');
       }
@@ -48,7 +51,7 @@ const ConsultaNumeros: React.FC = () => {
       setIsLoading(false);
     }
   };
-  
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -57,10 +60,11 @@ const ConsultaNumeros: React.FC = () => {
           Digite seu número de telefone para consultar suas compras
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* Campo de telefone permanece o mesmo */}
             <FormField
               control={form.control}
               name="telefone"
@@ -76,16 +80,12 @@ const ConsultaNumeros: React.FC = () => {
                         {...field}
                         onChange={(e) => {
                           let value = e.target.value.replace(/\D/g, '');
-                        
-                          if (value.length > 11) {
-                            value = value.slice(0, 11); // Limita a 11 dígitos
-                          }
-                        
-                          // Formata para (XX) XXXXX-XXXX
+                          if (value.length > 11) value = value.slice(0, 11);
+
                           const ddd = value.slice(0, 2);
                           const parte1 = value.slice(2, 7);
                           const parte2 = value.slice(7, 11);
-                        
+
                           let formatted = '';
                           if (value.length > 7) {
                             formatted = `(${ddd}) ${parte1}-${parte2}`;
@@ -94,7 +94,7 @@ const ConsultaNumeros: React.FC = () => {
                           } else if (value.length > 0) {
                             formatted = `(${ddd}`;
                           }
-                        
+
                           field.onChange(formatted);
                         }}
                       />
@@ -104,7 +104,7 @@ const ConsultaNumeros: React.FC = () => {
                 </FormItem>
               )}
             />
-            
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
@@ -120,17 +120,23 @@ const ConsultaNumeros: React.FC = () => {
             </Button>
           </form>
         </Form>
-        
+
         {pesquisaRealizada && !isLoading && (
           <div className="mt-6">
             <h3 className="font-medium text-lg mb-3">Resultado da consulta:</h3>
-            
+
+            {nomeComprador && (
+              <p className="text-md text-gray-700 mb-2">
+                Comprador: <span className="font-semibold text-rifa-primary">{nomeComprador}</span>
+              </p>
+            )}
+
             {numerosComprados.length > 0 ? (
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
                   {numerosComprados.length} número{numerosComprados.length !== 1 ? 's' : ''} encontrado{numerosComprados.length !== 1 ? 's' : ''} para este telefone:
                 </p>
-                
+
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
                   {numerosComprados.map(numero => (
                     <div 
@@ -146,7 +152,7 @@ const ConsultaNumeros: React.FC = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="pt-4 text-sm">
                   <div className="flex items-center mb-2">
                     <div className="w-3 h-3 rounded-full bg-yellow-100 mr-2"></div>

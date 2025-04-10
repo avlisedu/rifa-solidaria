@@ -85,12 +85,13 @@ export const rifaService = {
         id: item.id,
         numero: numeroValue,
         status: item.comprovante ? 'pago' : 'reservado',
-        nome_comprador: item.nome,
+        nome: item.nome, // <- ESSA LINHA É A CHAVE
         telefone_comprador: item.telefone,
         instagram_comprador: item.instagram,
         data_compra: item.data_reserva,
         comprovante_url: item.comprovante
       };
+      
     });
   },
   
