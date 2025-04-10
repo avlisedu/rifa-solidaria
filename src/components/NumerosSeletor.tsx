@@ -17,7 +17,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
   const [isLoading, setIsLoading] = useState(true);
   const numerosPorPagina = 100;
   
-  const totalPaginas = Math.ceil(400 / numerosPorPagina);
+  const totalPaginas = Math.ceil(200 / numerosPorPagina);
   
   useEffect(() => {
     const fetchNumeros = async () => {
@@ -27,7 +27,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
         
         // Se não temos registros do banco, vamos criar um array com os 1000 números
         if (numerosData.length === 0) {
-          const inicialNumeros: RifaNumber[] = Array.from({ length: 400 }, (_, i) => ({
+          const inicialNumeros: RifaNumber[] = Array.from({ length: 200 }, (_, i) => ({
             numero: i + 1,
             status: 'disponivel'
           }));
