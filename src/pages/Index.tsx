@@ -42,7 +42,7 @@ const Index = () => {
               <ul className="list-disc pl-5 space-y-1">
                 <li>Cada número custa R$ 10,00</li>
                 <li>Escolha quantos números quiser</li>
-                <li>Faça o pagamento via PIX</li>
+                <li>Faça o pagamento via Pix</li>
                 <li>Envie o comprovante para confirmar (Obrigatório)</li>
               </ul>
             </div>
@@ -51,7 +51,7 @@ const Index = () => {
               <ul className="list-disc pl-5 space-y-1">
                 <li>1º lugar: R$ 200,00</li>
                 <li>2º lugar: Barril de Chopp Heineken 5 Litros</li>
-                <li>Sorteio pela Loteria Federal</li>
+                <li>Sorteio em live no Instagram por meio do sorteio.com</li>
                 <li>Data do sorteio: 01/05/2025</li>
                 <li>Resultado divulgado nas redes sociais (@eo.silva)</li>
               </ul>

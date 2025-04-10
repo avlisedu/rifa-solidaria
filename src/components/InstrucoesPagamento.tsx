@@ -22,9 +22,9 @@ const InstrucoesPagamento: React.FC<InstrucoesPagamentoProps> = ({
     tempInput.select();
     try {
       document.execCommand('copy');
-      toast.success('Chave PIX copiada com sucesso!');
+      toast.success('Chave Pix copiada com sucesso!');
     } catch (err) {
-      toast.error('Erro ao copiar a chave PIX');
+      toast.error('Erro ao copiar a chave Pix');
     }
     document.body.removeChild(tempInput);
   };
@@ -53,11 +53,11 @@ const InstrucoesPagamento: React.FC<InstrucoesPagamentoProps> = ({
             </div>
             
             <div className="pt-2 space-y-3">
-              <p className="font-medium">Faça o pagamento via PIX:</p>
+              <p className="font-medium">Faça o pagamento via Pix:</p>
               
               <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2">
                 <div>
-                  <span className="font-medium">Chave PIX (E-mail):</span> 
+                  <span className="font-medium">Chave Pix (E-mail):</span> 
                   <div className="bg-white border border-gray-200 rounded px-3 py-1.5 mt-1 flex justify-between items-center">
                     <code className="text-sm">eduardo.es@ufpe.br</code>
                     <button 

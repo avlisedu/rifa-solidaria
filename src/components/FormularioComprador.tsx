@@ -14,7 +14,7 @@ import { rifaService } from '@/services/supabaseClient';
 const formSchema = z.object({
   nome: z.string().min(3, { message: 'Nome é obrigatório (mín. 3 caracteres)' }),
   telefone: z.string().min(10, { message: 'Telefone inválido' }),
-  instagram: z.string().min(1, { message: 'Instagram é obrigatório' }),
+  instagram: z.string().optional(),
   numeros: z.array(z.number()).min(1, { message: 'Selecione pelo menos um número' }),
   comprovante: z.instanceof(File).optional()
 });
