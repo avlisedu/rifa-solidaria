@@ -25,11 +25,11 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
 
         // Gera de 301 a 500
         const inicialNumeros: RifaNumber[] = Array.from({ length: 200 }, (_, i) => ({
-          numero: i + 301,
+          numero: i + 401,
           status: 'disponivel'
         }));
 
-        const usados = numerosData.filter(n => n.numero >= 301 && n.numero <= 500);
+        const usados = numerosData.filter(n => n.numero >= 401 && n.numero <= 500);
         const atualizados = inicialNumeros.map((n) => {
           const encontrado = usados.find(u => u.numero === n.numero);
           return encontrado || n;
@@ -47,7 +47,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
   }, []);
 
   const numerosExibidos = todosNumeros
-    .filter(n => n.numero >= 301 && n.numero <= 500)
+    .filter(n => n.numero >= 401 && n.numero <= 500)
     .slice((paginaAtual - 1) * numerosPorPagina, paginaAtual * numerosPorPagina);
 
   const toggleNumero = (numero: number) => {
@@ -116,7 +116,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
           <>
             <div className="flex justify-center mb-2">
               <div className="px-3 py-1 bg-rifa-primary text-white rounded-full text-sm font-medium">
-                Página {paginaAtual} de {totalPaginas} – Números {301 + (paginaAtual - 1) * 100} a {Math.min(500, 301 + paginaAtual * 100 - 1)}
+                Página {paginaAtual} de {totalPaginas} – Números {401 + (paginaAtual - 1) * 100} a {Math.min(500, 401 + paginaAtual * 100 - 1)}
               </div>
             </div>
             <div className="number-grid">
