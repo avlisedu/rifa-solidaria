@@ -15,7 +15,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const numerosPorPagina = 100;
-  const totalPaginas = 2;
+  const totalPaginas = 5;
 
   useEffect(() => {
     const fetchNumeros = async () => {
@@ -24,12 +24,12 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
         const numerosData = await rifaService.getNumeros();
 
         // Gera de 301 a 500
-        const inicialNumeros: RifaNumber[] = Array.from({ length: 200 }, (_, i) => ({
-          numero: i + 401,
+        const inicialNumeros: RifaNumber[] = Array.from({ length: 500 }, (_, i) => ({
+          numero: i + 1,
           status: 'disponivel'
         }));
 
-        const usados = numerosData.filter(n => n.numero >= 401 && n.numero <= 500);
+        const usados = numerosData.filter(n => n.numero >= 1 && n.numero <= 500);
         const atualizados = inicialNumeros.map((n) => {
           const encontrado = usados.find(u => u.numero === n.numero);
           return encontrado || n;
@@ -47,7 +47,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
   }, []);
 
   const numerosExibidos = todosNumeros
-    .filter(n => n.numero >= 401 && n.numero <= 500)
+    .filter(n => n.numero >= 1 && n.numero <= 500)
     .slice((paginaAtual - 1) * numerosPorPagina, paginaAtual * numerosPorPagina);
 
   const toggleNumero = (numero: number) => {
@@ -99,7 +99,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
           </Button>
           <Button
             variant="outline"
-            onClick={() => setPaginaAtual(prev => Math.min(prev + 1, totalPaginas))}
+            onClick={() => setPaginaAtual(prev => Math.min(prev + 5, totalPaginas))}
             disabled={paginaAtual === totalPaginas}
           >
             Próxima
@@ -116,7 +116,7 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
           <>
             <div className="flex justify-center mb-2">
               <div className="px-3 py-1 bg-rifa-primary text-white rounded-full text-sm font-medium">
-                Página {paginaAtual} de {totalPaginas} – Números {401 + (paginaAtual - 1) * 100} a {Math.min(500, 401 + paginaAtual * 100 - 1)}
+                Página {paginaAtual} de {totalPaginas} – Números {1 + (paginaAtual - 1) * 100} a {Math.min(500, 1 + paginaAtual * 100 - 1)}
               </div>
             </div>
             <div className="number-grid">
@@ -143,18 +143,20 @@ const NumerosSeletor: React.FC<NumerosSeletorProps> = ({ onNumerosChange }) => {
 
       <div className="flex justify-center">
         <Pagination>
-          {[1, 2].map(page => (
+          {[...Array(5)].map((_, index) => (
             <Button
-              key={page}
-              variant={page === paginaAtual ? "default" : "outline"}
-              onClick={() => setPaginaAtual(page)}
+              key={index + 1}
+              variant={paginaAtual === index + 1 ? "default" : "outline"}
+              onClick={() => setPaginaAtual(index + 1)}
               className="mx-1"
             >
-              {page}
+              {index + 1}
             </Button>
           ))}
         </Pagination>
       </div>
+
+
     </div>
   );
 };
